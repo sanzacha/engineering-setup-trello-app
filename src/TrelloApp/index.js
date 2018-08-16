@@ -1,3 +1,5 @@
+const axios = require('axios');
+
 function TrelloApp(currState, action) {
   switch(action.type) {
     case 'ADD_CARD':
@@ -24,11 +26,19 @@ function TrelloApp(currState, action) {
       // TODO:
     case 'MOVE_LIST':
       // TODO:
-
     case 'EDIT_CARD':
       // TODO:
     case 'MOVE_CARD':
       // TODO:
+    case 'SET_CURRENT_BOARD':
+      return Object.assign({}, {
+        currentBoard: action.payload
+      });
+    case 'SET_BOARDS_LIST':
+      console.log('new Boards List:', action.payload);
+      return Object.assign({}, {
+        boardsList: action.payload
+      });
     default:
       return currState;
   }
