@@ -3,6 +3,7 @@ const axios = require('axios');
 function TrelloApp(currState, action) {
   switch(action.type) {
     case 'ADD_CARD':
+    {
       const list = currState.currentBoard.lists.find(list => list.id === action.payload.listId);
       const index = currState.currentBoard.lists.indexOf(list);
       const newList = Object.assign({}, list, {
@@ -17,17 +18,43 @@ function TrelloApp(currState, action) {
           ]
         })
       });
+    }
 
     case 'EDIT_BOARD':
       // TODO:
     case 'CREATE_LIST':
       // TODO:
     case 'EDIT_LIST':
-      // TODO:
+      {
+        const {listId, newValue} = action.payload;
+        const index = currState.currentBoard.lists.findIndex(list => list.id === listId);
+        const list = currState.currentBoard.lists[index];
+        const newList = Object.assign({}, list, {name: newValue});
+        const lists = [...currState.currentBoard.lists.slice(0, index), newList, ...currState.currentBoard.lists.slice(index+1)];
+
+        const currentBoard = Object.assign({}, currState.currentBoard, { lists });
+        return Object.assign({}, currState, {currentBoard});
+      }
     case 'MOVE_LIST':
       // TODO:
     case 'EDIT_CARD':
-      // TODO:
+    {
+      const {listId, cardId, newValue} = action.payload;
+      const listIndex = currState.currentBoard.lists.findIndex(list => list.id === listId);
+      const list = currState.currentBoard.lists[listIndex];
+      const cardIndex = list.cards.findIndex(card => card.id === cardId);
+      const card = list.cards[cardIndex];
+
+      console.log('listIndex:', listIndex);
+      console.log('cardIndex:', cardIndex);
+
+      const updatedCards = [...list.cards.slice(0, cardIndex), {id: cardId, text: newValue}, ...list.cards.slice(cardIndex+1)];
+      const updatedList = Object.assign({}, list, {cards: updatedCards});
+
+      const lists = [...currState.currentBoard.lists.slice(0, listIndex), updatedList, ...currState.currentBoard.lists.slice(listIndex+1)];
+      const currentBoard = Object.assign({}, currState.currentBoard, { lists });
+      return Object.assign({}, currState, {currentBoard});
+    }
     case 'MOVE_CARD':
       // TODO:
     case 'SET_CURRENT_BOARD':

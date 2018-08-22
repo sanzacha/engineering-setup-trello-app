@@ -95,14 +95,7 @@ export default class Lists extends Component {
               ) : this.props.data.name
             }
           </Typography>
-          {this.props.data.cards.map(card => (
-            <Card
-              key={card.id}
-              style={styles.children}
-              data={card}
-              onCardUpdate={this.handleCardUpdate.bind(this, card.id)}
-            />
-          ))}
+          {this.props.children}
           {this.state.addingCard ? (
               <form onSubmit={this.handleCreateCard.bind(this)}>
                 <TextField

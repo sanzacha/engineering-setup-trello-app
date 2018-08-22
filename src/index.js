@@ -16,7 +16,7 @@ const store = createStore(TrelloApp, {
   currentBoard: null
 }, applyMiddleware(sagaMiddleware));
 
-sagaMiddleware.run(sagas);
+sagaMiddleware.run(sagas)
 
 store.subscribe(() => {
   console.log('NEW STATE:', store.getState());
