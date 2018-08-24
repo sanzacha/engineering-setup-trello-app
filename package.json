@@ -19,7 +19,7 @@
   },
   "scripts": {
     "serve": "concurrently \"react-scripts start\" \"json-server -p 3001 -r routes.json -w db.json\"",
-    "start": "json-server -s build -p 3001 -r routes.json -w db.json",
+    "start": "json-server -s build -H 0.0.0.0 -p $PORT -r routes.json -w db.json",
     "build": "react-scripts build",
     "test": "mocha src/**/*.test.js",
     "eject": "react-scripts eject"
