@@ -1,5 +1,3 @@
-const axios = require('axios');
-
 function TrelloApp(currState, action) {
   switch(action.type) {
     case 'ADD_CARD':
@@ -21,9 +19,9 @@ function TrelloApp(currState, action) {
     }
 
     case 'EDIT_BOARD':
-      // TODO:
+      return currState;
     case 'CREATE_LIST':
-      // TODO:
+      return currState;
     case 'EDIT_LIST':
       {
         const {listId, newValue} = action.payload;
@@ -36,14 +34,13 @@ function TrelloApp(currState, action) {
         return Object.assign({}, currState, {currentBoard});
       }
     case 'MOVE_LIST':
-      // TODO:
+      return currState;
     case 'EDIT_CARD':
     {
       const {listId, cardId, newValue} = action.payload;
       const listIndex = currState.currentBoard.lists.findIndex(list => list.id === listId);
       const list = currState.currentBoard.lists[listIndex];
       const cardIndex = list.cards.findIndex(card => card.id === cardId);
-      const card = list.cards[cardIndex];
 
       console.log('listIndex:', listIndex);
       console.log('cardIndex:', cardIndex);
@@ -56,7 +53,7 @@ function TrelloApp(currState, action) {
       return Object.assign({}, currState, {currentBoard});
     }
     case 'MOVE_CARD':
-      // TODO:
+      return currState;
     case 'SET_CURRENT_BOARD':
       return Object.assign({}, {
         currentBoard: action.payload
