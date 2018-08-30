@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Paper from '@material-ui/core/Paper';
-import Card from './Card';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
@@ -57,6 +56,7 @@ export default class Lists extends Component {
   }
 
   handleCreateCard(event) {
+    // Create Card here...
     event.preventDefault();
     if(!this.state.addCardText) { return; }
     this.props.onCreateCard(this.state.addCardText);
@@ -95,14 +95,7 @@ export default class Lists extends Component {
               ) : this.props.data.name
             }
           </Typography>
-          {this.props.data.cards.map(card => (
-            <Card
-              key={card.id}
-              style={styles.children}
-              data={card}
-              onCardUpdate={this.handleCardUpdate.bind(this, card.id)}
-            />
-          ))}
+          {this.props.children}
           {this.state.addingCard ? (
               <form onSubmit={this.handleCreateCard.bind(this)}>
                 <TextField

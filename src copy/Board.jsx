@@ -4,6 +4,8 @@ import axios from 'axios';
 import List from './List';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
+import { connect } from 'react-redux';
+import Card from './Card';
 
 const styles = {
   flexContainer: {
@@ -17,9 +19,13 @@ const styles = {
   }
 }
 
-export default class Board extends Component {
+class Board extends Component {
   static propTypes = {
     id: PropTypes.string.isRequired,
+    currentBoard: PropTypes.object,
+    getCurrentBoard: PropTypes.func.isRequired,
+    handleCardUpdate: PropTypes.func.isRequired,
+    handleListUpdate: PropTypes.func.isRequired
   };
 
   constructor(props) {
@@ -32,7 +38,7 @@ export default class Board extends Component {
   }
 
   componentDidMount() {
-    axios.get(`/api/board/${this.props.id}`).then(result => this.setState(result.data));
+    this.props.getCurrentBoard(this.props.id);
   }
 
   handleCreateList(event) {
@@ -47,16 +53,6 @@ export default class Board extends Component {
     this.saveBoard();
   }
 
-  handleListUpdate(listId, newValue) {
-    const index = this.state.lists.findIndex(list => list.id === listId);
-    const list = this.state.lists[index];
-    const newList = Object.assign({}, list, {name: newValue});
-    const lists = [...this.state.lists.slice(0, index), newList, ...this.state.lists.slice(index+1)];
-
-    this.setState({lists});
-    this.saveBoard();
-  }
-
   handleCreateCard(listId, cardText) {
     const index = this.state.lists.findIndex(list => list.id === listId);
     const list = this.state.lists[index];
@@ -65,23 +61,6 @@ export default class Board extends Component {
     const newList = Object.assign({}, list, {cards});
 
     const lists = [...this.state.lists.slice(0, index), newList, ...this.state.lists.slice(index+1)];
-    this.setState({lists});
-    this.saveBoard();
-  }
-
-  handleCardUpdate(listId, cardId, newValue) {
-    const listIndex = this.state.lists.findIndex(list => list.id === listId);
-    const list = this.state.lists[listIndex];
-    const cardIndex = list.cards.findIndex(card => card.id === cardId);
-    const card = list.cards[cardIndex];
-
-    console.log('listIndex:', listIndex);
-    console.log('cardIndex:', cardIndex);
-
-    const updatedCards = [...list.cards.slice(0, cardIndex), {id: cardId, text: newValue}, ...list.cards.slice(cardIndex+1)];
-    const updatedList = Object.assign({}, list, {cards: updatedCards});
-
-    const lists = [...this.state.lists.slice(0, listIndex), updatedList, ...this.state.lists.slice(listIndex+1)];
     this.setState({lists});
     this.saveBoard();
   }
@@ -105,19 +84,35 @@ export default class Board extends Component {
     this.setState({addListTitle: event.target.value});
   }
 
+  mapStateToPropsList(listId, state) {
+    
+  }
+
+  mapDispatchToPropsList(listId, dispatch) {
+    
+  }
+
   render() {
+    const lists = this.props.currentBoard ? this.props.currentBoard.lists : [];
+
     return (
       <Fragment>
         <div style={styles.flexContainer}>
-          {this.state.lists.map(list => (
+          {lists.map(list => (
             <List
               styles={styles.flexItem}
               key={list.id}
               data={list}
               onCreateCard={this.handleCreateCard.bind(this, list.id)}
-              onCardUpdate={this.handleCardUpdate.bind(this, list.id)}
-              onListUpdate={this.handleListUpdate.bind(this, list.id)}
-            />
+              onListUpdate={this.props.handleListUpdate.bind(this, list.id)}
+              onCardUpdate={this.props.handleCardUpdate.bind(this, list.id)}
+            >
+              {list.cards.map(card => <Card
+                key={card.id}
+                data={card}
+                onCardUpdate={this.props.handleCardUpdate.bind(this, list.id, card.id)}
+              />)}
+            </List>
           ))}
 
           {this.state.addingList ? (
@@ -147,3 +142,24 @@ export default class Board extends Component {
     );
   }
 }
+
+const mapStateToProps = (state) => ({
+  currentBoard: state.currentBoard
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  getCurrentBoard: (boardId) => dispatch({
+    type: 'GET_CURRENT_BOARD',
+    payload: {boardId}
+  }),
+  handleCardUpdate: (listId, cardId, newValue) => dispatch({
+    type: 'EDIT_CARD',
+    payload: {listId, cardId, newValue}
+  }),
+  handleListUpdate: (listId, cardId, newValue) => dispatch({
+    type: 'EDIT_LIST',
+    payload: {listId, cardId, newValue}
+  })
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Board);

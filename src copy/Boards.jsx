@@ -1,15 +1,16 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import axios from 'axios';
 import { Link } from 'react-router-dom';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
+import { connect } from 'react-redux';
 
-export default class Boards extends Component {
+class Boards extends Component {
   static propTypes = {
-    name: PropTypes.string,
+    dispatch: PropTypes.func.isRequired,
+    boardsList: PropTypes.array,
   };
 
   constructor(props) {
@@ -20,13 +21,18 @@ export default class Boards extends Component {
   }
 
   componentDidMount() {
-    axios.get('/api/boardsList').then(result => this.setState({boards: result.data}));
+    this.props.dispatch({
+      type: 'GET_BOARDS_LIST'
+    });
   }
 
   render() {
+    console.log('props.boardsList', this.props.boardsList);
+    const boardsList = this.props.boardsList || [];
+
     return (
       <Grid container spacing={16}>
-        {this.state.boards.map(board => <Grid key={board.id} item xl={2}>
+        {boardsList.map(board => <Grid key={board.id} item xl={2}>
           <Link to={`/boards/${board.id}`}>
           
             <Card>
@@ -40,3 +46,9 @@ export default class Boards extends Component {
     );
   }
 }
+
+const mapStateToProps = (state) => ({
+  boardsList: state.boardsList
+});
+
+export default connect(mapStateToProps)(Boards);
