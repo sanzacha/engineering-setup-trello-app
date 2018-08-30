@@ -73,7 +73,6 @@ export default class Board extends Component {
     const listIndex = this.state.lists.findIndex(list => list.id === listId);
     const list = this.state.lists[listIndex];
     const cardIndex = list.cards.findIndex(card => card.id === cardId);
-    const card = list.cards[cardIndex];
 
     console.log('listIndex:', listIndex);
     console.log('cardIndex:', cardIndex);
