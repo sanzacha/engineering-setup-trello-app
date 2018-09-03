@@ -47,6 +47,10 @@
             {
               "id": 682831377.990909,
               "text": "new card"
+            },
+            {
+              "id": 142681021.0042156,
+              "text": ""
             }
           ]
         },
@@ -65,6 +69,24 @@
             {
               "id": 44,
               "text": "Onboard Developers"
+            }
+          ]
+        },
+        {
+          "id": 551940315.1968652,
+          "name": "React Training",
+          "cards": [
+            {
+              "id": 382636641.9605793,
+              "text": "Redux"
+            },
+            {
+              "id": 852738946.6957139,
+              "text": "Mocha, Enzyme testing"
+            },
+            {
+              "id": 853942473.6569488,
+              "text": "CircileCi, heroku"
             }
           ]
         }
