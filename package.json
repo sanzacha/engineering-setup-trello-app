@@ -23,7 +23,7 @@
     "start": "json-server -s build -H 0.0.0.0 -p $PORT -r routes.json -w db.json",
     "build": "react-scripts build",
     "postinstall": "react-scripts build",
-    "test": "mocha src/**/*.test.js",
+    "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
   },
   "devDependencies": {
