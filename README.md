@@ -6,7 +6,7 @@ You can find the most recent version of this guide [here](https://github.com/fac
 ## Table of Contents
 
 - [Updating to New Releases](#updating-to-new-releases)
-- 
+- https://engineering-setup-trello.herokuapp.com/
 
 ## Something Missing?
 
