@@ -1,21 +1,21 @@
 // import Enzyme from 'enzyme';
 // import Adapter from 'enzyme-adapter-react-16';
 
-const { Enzyme, configure, shallow, render } = require('enzyme');
-const Adapter = require('enzyme-adapter-react-16');
+// const { Enzyme, configure, shallow, render } = require('enzyme');
+// const Adapter = require('enzyme-adapter-react-16');
 
 const { createStore } = require('redux');
 const TrelloApp = require('.');
 const should = require('chai').should();
 const deepFreeze = require('deep-freeze');
 
-configure({ adapter: new Adapter() });
+// configure({ adapter: new Adapter() });
 
-describe('<Kanban />', () => {
-	it('it should load without errors', () => {
-		const kanban = shallow(<Kanban />);
-	});
-})
+// describe('<Kanban />', () => {
+// 	it('it should load without errors', () => {
+// 		const kanban = shallow(<Kanban />);
+// 	});
+// })
 
 describe('TrelloApp', function() {
 
